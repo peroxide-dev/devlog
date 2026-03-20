@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { loadConfig, resolveLogsDir } from "../lib/config.js";
 import { readLog } from "../lib/storage.js";
 import { todayDate, formatDisplayDate, parseDate } from "../utils/date.js";
-import { printSuccess, printError } from "../utils/format.js";
+import { printError } from "../utils/format.js";
 import type { DevLog } from "../lib/types.js";
 
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
@@ -44,14 +44,14 @@ export function formatLogAsMarkdown(log: DevLog): string {
   return lines.join("\n");
 }
 
-export async function runExport(dateInput?: string): Promise<void> {
+export async function runExport(dateInput?: string): Promise<string> {
   const config = await loadConfig();
   if (!config) {
     printError(
       'No config found. Run "devlog init" first to set up your API key.',
     );
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   let date: string;
@@ -59,13 +59,13 @@ export async function runExport(dateInput?: string): Promise<void> {
     if (!DATE_REGEX.test(dateInput)) {
       printError("Invalid date format. Use YYYY-MM-DD");
       process.exitCode = 1;
-      return;
+      return "";
     }
     const parsed = parseDate(dateInput);
     if (!parsed) {
       printError("Invalid date format. Use YYYY-MM-DD");
       process.exitCode = 1;
-      return;
+      return "";
     }
     date = parsed;
   } else {
@@ -80,7 +80,7 @@ export async function runExport(dateInput?: string): Promise<void> {
       `No log found for ${date}. Run "devlog today" first.`,
     );
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   const markdown = formatLogAsMarkdown(log);
@@ -89,10 +89,13 @@ export async function runExport(dateInput?: string): Promise<void> {
 
   try {
     await fs.writeFile(outputPath, markdown, "utf-8");
-    printSuccess(`Exported → ${outputPath}`);
+    const msg = `Exported → ${outputPath}`;
+    console.log(`✓ ${msg}`);
+    return msg;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     printError(`Failed to write export: ${message}`);
     process.exitCode = 1;
+    return "";
   }
 }

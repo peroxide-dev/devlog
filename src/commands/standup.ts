@@ -3,7 +3,7 @@ import { getCommitsForDate, getFileStats } from "../lib/git.js";
 import { generateStandupSummary } from "../lib/claude.js";
 import { saveLog } from "../lib/storage.js";
 import { todayDate, yesterdayDate, formatDisplayDate } from "../utils/date.js";
-import { printSummary, printSuccess, printError } from "../utils/format.js";
+import { printError } from "../utils/format.js";
 import type { GitActivity, DevLog } from "../lib/types.js";
 
 async function fetchActivity(date: string, cwd: string): Promise<GitActivity> {
@@ -34,14 +34,14 @@ async function fetchActivity(date: string, cwd: string): Promise<GitActivity> {
   };
 }
 
-export async function runStandup(): Promise<void> {
+export async function runStandup(): Promise<string> {
   const config = await loadConfig();
   if (!config) {
     printError(
       'No config found. Run "devlog init" first to set up your API key.',
     );
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   const cwd = process.cwd();
@@ -57,7 +57,7 @@ export async function runStandup(): Promise<void> {
     const message = err instanceof Error ? err.message : String(err);
     printError(message);
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   let summary: string;
@@ -71,12 +71,10 @@ export async function runStandup(): Promise<void> {
     const message = err instanceof Error ? err.message : String(err);
     printError(`Claude API error: ${message}`);
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   const displayDate = formatDisplayDate(today);
-  printSummary(`📋 Standup — ${displayDate}`, summary);
-
   const logsDir = resolveLogsDir(config.logsDir);
   const log: DevLog = {
     date: today,
@@ -86,11 +84,26 @@ export async function runStandup(): Promise<void> {
     generatedAt: new Date().toISOString(),
   };
 
+  let savedPath = "";
   try {
     await saveLog(log, logsDir, "standup");
-    printSuccess(`Saved → ${logsDir}/${today}-standup.json`);
+    savedPath = `${logsDir}/${today}-standup.json`;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     printError(`Failed to save log: ${message}`);
   }
+
+  const lines = [
+    `📋 Standup — ${displayDate}`,
+    "─".repeat(40),
+    summary,
+    "",
+  ];
+  if (savedPath) {
+    lines.push(`Saved → ${savedPath}`);
+  }
+
+  const output = lines.join("\n");
+  console.log(output);
+  return output;
 }

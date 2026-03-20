@@ -4,7 +4,8 @@
   "description": "Local-first CLI that transforms git activity into dev logs using Claude API",
   "type": "module",
   "bin": {
-    "devlog": "./dist/index.js"
+    "devlog": "./dist/index.js",
+    "devlog-mcp": "./dist/mcp/server.js"
   },
   "engines": {
     "node": ">=18"
@@ -15,12 +16,18 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "keywords": ["devlog", "git", "cli", "developer-tools"],
+  "keywords": [
+    "devlog",
+    "git",
+    "cli",
+    "developer-tools"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
     "@inquirer/prompts": "^8.3.2",
+    "@modelcontextprotocol/sdk": "^1.27.1",
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "dayjs": "^1.11.20"

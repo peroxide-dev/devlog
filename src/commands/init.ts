@@ -45,3 +45,25 @@ export async function runInit(): Promise<void> {
   printSuccess("Config saved to ~/.devlog/config.json");
   printSuccess('Run "devlog today" to generate your first log');
 }
+
+/**
+ * Non-interactive init for MCP. Takes API key directly.
+ */
+export async function initFromParams(params: {
+  apiKey: string;
+  defaultTone?: "daily" | "standup" | "portfolio";
+  logsDir?: string;
+}): Promise<string> {
+  if (!params.apiKey || !params.apiKey.startsWith("sk-ant-")) {
+    return "Error: API key is required and must start with sk-ant-";
+  }
+
+  const config: DevLogConfig = {
+    apiKey: params.apiKey.trim(),
+    defaultTone: params.defaultTone ?? "daily",
+    logsDir: params.logsDir?.trim() ?? getDefaultLogsDir(),
+  };
+
+  await saveConfig(config);
+  return "Config saved to ~/.devlog/config.json. Run devlog_today to generate your first log.";
+}

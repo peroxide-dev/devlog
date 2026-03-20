@@ -3,24 +3,24 @@ import { getCommitsForDate, getFileStats } from "../lib/git.js";
 import { generateSummary } from "../lib/claude.js";
 import { saveLog } from "../lib/storage.js";
 import { formatDisplayDate } from "../utils/date.js";
-import { printSummary, printSuccess, printError } from "../utils/format.js";
+import { printError } from "../utils/format.js";
 import type { GitActivity, DevLog } from "../lib/types.js";
 
 /**
- * Shared pipeline: fetch git data → summarize via Claude → print → save.
- * Used by today, yesterday, and date commands.
+ * Shared pipeline: fetch git data → summarize via Claude → save.
+ * Returns the formatted output string. Errors go to stderr.
  */
 export async function summarizeForDate(
   date: string,
   emoji: string,
-): Promise<void> {
+): Promise<string> {
   const config = await loadConfig();
   if (!config) {
     printError(
       'No config found. Run "devlog init" first to set up your API key.',
     );
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   const cwd = process.cwd();
@@ -36,7 +36,7 @@ export async function summarizeForDate(
       printError(`Git error: ${message}`);
     }
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   let fileStats: Awaited<ReturnType<typeof getFileStats>>;
@@ -61,12 +61,10 @@ export async function summarizeForDate(
     const message = err instanceof Error ? err.message : String(err);
     printError(`Claude API error: ${message}`);
     process.exitCode = 1;
-    return;
+    return "";
   }
 
   const displayDate = formatDisplayDate(date);
-  printSummary(`${emoji} Dev Summary — ${displayDate}`, summary);
-
   const logsDir = resolveLogsDir(config.logsDir);
   const log: DevLog = {
     date,
@@ -76,11 +74,24 @@ export async function summarizeForDate(
     generatedAt: new Date().toISOString(),
   };
 
+  let savedPath = "";
   try {
     await saveLog(log, logsDir);
-    printSuccess(`Saved → ${logsDir}/${date}.json`);
+    savedPath = `${logsDir}/${date}.json`;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     printError(`Failed to save log: ${message}`);
   }
+
+  const lines = [
+    `${emoji} Dev Summary — ${displayDate}`,
+    "─".repeat(40),
+    summary,
+    "",
+  ];
+  if (savedPath) {
+    lines.push(`Saved → ${savedPath}`);
+  }
+
+  return lines.join("\n");
 }
