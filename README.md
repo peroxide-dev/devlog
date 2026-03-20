@@ -9,12 +9,12 @@
 <h1 align="center">devlog</h1>
 
 <p align="center">
-  <strong>Turn your git activity into daily logs, standups, and portfolio writeups — automatically.</strong>
+  <strong>Turn your git activity into daily logs, standups, and portfolio writeups automatically.</strong>
 </p>
 
 <p align="center">
   A local-first CLI that reads your git history and uses Claude AI to generate<br/>
-  concise, professional dev summaries. No cloud. No SaaS. No auth. Just your terminal.
+  concise, professional dev summaries. No cloud. No B2B SaaS. No auth. Just your terminal.
 </p>
 
 ---
