@@ -3,6 +3,8 @@
 import { Command } from "commander";
 import { runInit } from "./commands/init.js";
 import { runToday } from "./commands/today.js";
+import { runYesterday } from "./commands/yesterday.js";
+import { runDate } from "./commands/date.js";
 
 const program = new Command();
 
@@ -35,6 +37,20 @@ program
   .description("Summarize today's git activity")
   .action(async () => {
     await runToday();
+  });
+
+program
+  .command("yesterday")
+  .description("Summarize yesterday's git activity")
+  .action(async () => {
+    await runYesterday();
+  });
+
+program
+  .command("date <date>")
+  .description("Summarize git activity for a specific date (YYYY-MM-DD)")
+  .action(async (date: string) => {
+    await runDate(date);
   });
 
 program.parse();
