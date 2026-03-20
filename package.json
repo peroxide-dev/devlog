@@ -1,12 +1,17 @@
 {
-  "name": "devlog",
+  "name": "@anikkaushikkumar/devlog",
   "version": "1.0.0",
-  "description": "Local-first CLI that transforms git activity into dev logs using Claude API",
+  "description": "Local-first CLI that turns git activity into dev logs using Claude AI",
   "type": "module",
   "bin": {
-    "devlog": "./dist/index.js",
-    "devlog-mcp": "./dist/mcp/server.js"
+    "devlog": "dist/index.js",
+    "devlog-mcp": "dist/mcp/server.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=18"
   },
@@ -18,12 +23,20 @@
   },
   "keywords": [
     "devlog",
-    "git",
     "cli",
-    "developer-tools"
+    "git",
+    "claude",
+    "ai",
+    "developer-tools",
+    "mcp"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Anik <anikkaushikkumar@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anik-kaushik-kumar/devlog.git"
+  },
+  "homepage": "https://github.com/anik-kaushik-kumar/devlog#readme",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
     "@inquirer/prompts": "^8.3.2",

@@ -1,0 +1,8 @@
+src/
+tests/
+.claude/
+*.test.ts
+tsconfig.json
+vitest.config.ts
+.env
+.env.example
