@@ -7,6 +7,8 @@ import { runYesterday } from "./commands/yesterday.js";
 import { runDate } from "./commands/date.js";
 import { runStandup } from "./commands/standup.js";
 import { runExport } from "./commands/export.js";
+import { runLogs } from "./commands/logs.js";
+import { runView } from "./commands/view.js";
 
 const program = new Command();
 
@@ -67,6 +69,20 @@ program
   .description("Export a saved log as markdown (default: today)")
   .action(async (date?: string) => {
     await runExport(date);
+  });
+
+program
+  .command("logs")
+  .description("List all saved dev logs")
+  .action(async () => {
+    await runLogs();
+  });
+
+program
+  .command("view [date]")
+  .description("View a saved log (default: today)")
+  .action(async (date?: string) => {
+    await runView(date);
   });
 
 program.parse();

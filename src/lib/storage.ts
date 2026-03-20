@@ -48,3 +48,36 @@ export async function listLogs(logsDir: string): Promise<readonly string[]> {
     return [];
   }
 }
+
+/**
+ * Read all saved logs from the logs directory, sorted newest first.
+ */
+export async function readAllLogs(logsDir: string): Promise<readonly DevLog[]> {
+  const stems = await listLogs(logsDir);
+  const logs: DevLog[] = [];
+  for (const stem of stems) {
+    const log = await readLog(stem, logsDir);
+    if (log) {
+      logs.push(log);
+    }
+  }
+  return logs;
+}
+
+/**
+ * Read all logs for a specific date (daily + standup variants).
+ */
+export async function readLogsForDate(
+  date: string,
+  logsDir: string,
+): Promise<readonly DevLog[]> {
+  const variants = [date, `${date}-standup`];
+  const logs: DevLog[] = [];
+  for (const stem of variants) {
+    const log = await readLog(stem, logsDir);
+    if (log) {
+      logs.push(log);
+    }
+  }
+  return logs;
+}
