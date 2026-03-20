@@ -6,9 +6,14 @@ import type { DevLog } from "./types.js";
  * Save a dev log to the logs directory as YYYY-MM-DD.json.
  * Creates the directory if it does not exist.
  */
-export async function saveLog(log: DevLog, logsDir: string): Promise<void> {
+export async function saveLog(
+  log: DevLog,
+  logsDir: string,
+  suffix?: string,
+): Promise<void> {
   await fs.mkdir(logsDir, { recursive: true });
-  const filePath = path.join(logsDir, `${log.date}.json`);
+  const filename = suffix ? `${log.date}-${suffix}.json` : `${log.date}.json`;
+  const filePath = path.join(logsDir, filename);
   await fs.writeFile(filePath, JSON.stringify(log, null, 2), "utf-8");
 }
 

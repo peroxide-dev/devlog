@@ -5,6 +5,7 @@ import { runInit } from "./commands/init.js";
 import { runToday } from "./commands/today.js";
 import { runYesterday } from "./commands/yesterday.js";
 import { runDate } from "./commands/date.js";
+import { runStandup } from "./commands/standup.js";
 
 const program = new Command();
 
@@ -51,6 +52,13 @@ program
   .description("Summarize git activity for a specific date (YYYY-MM-DD)")
   .action(async (date: string) => {
     await runDate(date);
+  });
+
+program
+  .command("standup")
+  .description("Generate a standup update from yesterday and today")
+  .action(async () => {
+    await runStandup();
   });
 
 program.parse();
