@@ -6,6 +6,7 @@ import { runToday } from "./commands/today.js";
 import { runYesterday } from "./commands/yesterday.js";
 import { runDate } from "./commands/date.js";
 import { runStandup } from "./commands/standup.js";
+import { runExport } from "./commands/export.js";
 
 const program = new Command();
 
@@ -59,6 +60,13 @@ program
   .description("Generate a standup update from yesterday and today")
   .action(async () => {
     await runStandup();
+  });
+
+program
+  .command("export [date]")
+  .description("Export a saved log as markdown (default: today)")
+  .action(async (date?: string) => {
+    await runExport(date);
   });
 
 program.parse();
