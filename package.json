@@ -1,5 +1,5 @@
 {
-  "name": "@anikkaushikkumar/devlog",
+  "name": "@peroxide-dev/devlog",
   "version": "1.0.0",
   "description": "Local-first CLI that turns git activity into dev logs using Claude AI",
   "type": "module",
@@ -30,13 +30,13 @@
     "developer-tools",
     "mcp"
   ],
-  "author": "Anik <anikkaushikkumar@gmail.com>",
+  "author": "Anik",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anik-kaushik-kumar/devlog.git"
+    "url": "git+https://github.com/peroxide-dev/devlog.git"
   },
-  "homepage": "https://github.com/anik-kaushik-kumar/devlog#readme",
+  "homepage": "https://github.com/peroxide-dev/devlog#readme",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
     "@inquirer/prompts": "^8.3.2",

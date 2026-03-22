@@ -54,7 +54,7 @@ Blockers:
 ## Install
 
 ```bash
-npm install -g @anikkaushikkumar/devlog
+npm install -g @peroxide-dev/devlog
 ```
 
 ## Quick Start
@@ -179,7 +179,7 @@ Get your API key at **[console.anthropic.com](https://console.anthropic.com)**
 Contributions are welcome! Feel free to open issues and pull requests.
 
 ```bash
-git clone https://github.com/anik-kaushik-kumar/devlog.git
+git clone https://github.com/peroxide-dev/devlog.git
 cd devlog
 npm install
 npm test        # 65 tests
@@ -190,4 +190,4 @@ npm run build
 
 ## License
 
-[MIT](LICENSE) — built by [Anik](https://github.com/anik-kaushik-kumar)
+[MIT](LICENSE) — built by [Anik](https://github.com/peroxide-dev)
