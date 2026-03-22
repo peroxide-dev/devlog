@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/npm/v/@anikkaushikkumar/devlog?color=blue&label=npm" alt="npm version" />
+  <img src="https://img.shields.io/npm/v/@peroxide-dev/devlog?color=blue&label=npm" alt="npm version" />
   <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen" alt="node version" />
   <img src="https://img.shields.io/npm/l/@anikkaushikkumar/devlog" alt="license" />
   <img src="https://img.shields.io/badge/AI-Claude-blueviolet" alt="Claude AI" />
